@@ -21,9 +21,12 @@ public class Main extends Application {
         List<Point> points = NeuronUtils.readPointsFromFile();
         String.valueOf("0");
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("main.fxml"));
-        Scene scene = new Scene(root, 300, 300);
+
+
+        Scene scene = new Scene(root, 600, 600);
         primaryStage.setScene(scene);
         primaryStage.show();
+
 
     }
 }
