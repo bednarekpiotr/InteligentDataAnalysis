@@ -60,20 +60,24 @@ public class MainController {
 
     @FXML
     void refreshChart(ActionEvent event) {
+        Double left = 0.0;
+        Double right = 5.0;
         XYChart.Series tempSeries = new XYChart.Series();
+//        for (int i = 0; i< 1 ; i++ ) {
         for (Point point : points) {
             Double value = neuron.countU(point);
-            neuron.correctWeights(value, 0.05);
+            neuron.correctWeights(value, 0.1);
+//            }
         }
-        for (int i = 0; i < neuron.getNumberOfInputs(); i++) {
-            Point temp = new Point(null, i + 1.0, (-neuron.getWeights().get(0) / neuron.getWeights().get(1)) * (i + 1.0) - (neuron.getBias() / neuron.getWeights().get(1)));
-            tempSeries.getData().add(new XYChart.Data<>(temp.getX1(), temp.getX2()));
-        }
-
-
+        Point temp = new Point(null, left, (neuron.getWeights().get(0) / neuron.getWeights().get(1)) * left);
+        tempSeries.getData().add(new XYChart.Data<>(temp.getX1(), temp.getX2()));
+        Point temp2 = new Point(null, right, (neuron.getWeights().get(0) / neuron.getWeights().get(1)) * right);
+        tempSeries.getData().add(new XYChart.Data<>(temp2.getX1(), temp2.getX2()));
+//        Point temp = new Point(null, left, (neuron.getWeights().get(0) / neuron.getWeights().get(1)) *  left - (neuron.getBias() / neuron.getWeights().get(1)));
+//        tempSeries.getData().add(new XYChart.Data<>(temp.getX1(), temp.getX2()));
+//        Point temp2 = new Point(null, right, (neuron.getWeights().get(0) / neuron.getWeights().get(1)) * right - (neuron.getBias() / neuron.getWeights().get(1)));
+//        tempSeries.getData().add(new XYChart.Data<>(temp2.getX1(), temp2.getX2()));
         lineChart.getData().add(tempSeries);
-        String temp = new String();
-
 
 
     }
