@@ -17,13 +17,13 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Neuron neuron = new Neuron(false, 2);
-        List<Point> points = NeuronUtils.readPointsFromFile();
+
         String.valueOf("0");
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("main.fxml"));
 
 
         Scene scene = new Scene(root, 600, 600);
+        scene.getStylesheets().add(getClass().getClassLoader().getResource("chart.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
 

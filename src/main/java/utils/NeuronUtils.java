@@ -28,7 +28,7 @@ public class NeuronUtils {
     public static void fillWagesWithRandoms(List weights, double min, double max, int numberOfInputs) {
         for (int i = 0; i < numberOfInputs; i++) {
             LOGGER.info("Losowanie wag");
-            weights.add(ThreadLocalRandom.current().nextDouble(min, max));
+            weights.set(i,ThreadLocalRandom.current().nextDouble(min, max));
         }
     }
 

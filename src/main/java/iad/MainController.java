@@ -1,9 +1,11 @@
 package iad;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
 import utils.NeuronUtils;
 
 import java.net.URL;
@@ -26,17 +28,53 @@ public class MainController {
     private NumberAxis y;
 
     @FXML
-    private ScatterChart<?, ?> scatterChart;
+    private LineChart<?, ?> lineChart;
 
+    @FXML
+    private Button learn;
+
+
+    XYChart.Series seriesThree = new XYChart.Series();
+    Neuron neuron = new Neuron(true, 2);
+    List<Point> points = NeuronUtils.readPointsFromFile();
 
     @FXML
     void initialize() {
-        XYChart.Series series = new XYChart.Series();
-        List<Point> points = NeuronUtils.readPointsFromFile();
-        for (Point point : points) {
-            series.getData().add(new XYChart.Data<>(point.getX1(), point.getX2()));
+
+        XYChart.Series seriesOne = new XYChart.Series();
+        XYChart.Series seriesZero = new XYChart.Series();
+        for (int i = 0; i < neuron.getNumberOfInputs(); i++) {
+            Point temp = new Point(null, i + 1.0, (-neuron.getWeights().get(0) / neuron.getWeights().get(1)) * (i + 1.0) - (neuron.getBias() / neuron.getWeights().get(1)));
+            seriesThree.getData().add(new XYChart.Data<>(temp.getX1(), temp.getX2()));
         }
-        scatterChart.getData().addAll(series);
+
+
+        for (Point point : points) {
+            if (point.getTag() == 1)
+                seriesOne.getData().add(new XYChart.Data<>(point.getX1(), point.getX2()));
+            else seriesZero.getData().add(new XYChart.Data<>(point.getX1(), point.getX2()));
+        }
+        lineChart.getData().addAll(seriesOne, seriesZero, seriesThree);
+
+    }
+
+    @FXML
+    void refreshChart(ActionEvent event) {
+        XYChart.Series tempSeries = new XYChart.Series();
+        for (Point point : points) {
+            Double value = neuron.countU(point);
+            neuron.correctWeights(value, 0.05);
+        }
+        for (int i = 0; i < neuron.getNumberOfInputs(); i++) {
+            Point temp = new Point(null, i + 1.0, (-neuron.getWeights().get(0) / neuron.getWeights().get(1)) * (i + 1.0) - (neuron.getBias() / neuron.getWeights().get(1)));
+            tempSeries.getData().add(new XYChart.Data<>(temp.getX1(), temp.getX2()));
+        }
+
+
+        lineChart.getData().add(tempSeries);
+        String temp = new String();
+
+
 
     }
 
