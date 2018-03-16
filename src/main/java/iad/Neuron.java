@@ -42,17 +42,18 @@ public class Neuron {
         inputs = Arrays.asList(new Double[numberOfInputs]);
         weights = Arrays.asList(new Double[numberOfInputs]);
         NeuronUtils.fillWagesWithRandoms(weights, 2, 5, numberOfInputs);
-        if (isBias) bias = 0.1;
     }
 
     public Double countU(Point point) {
         Double u = 0.0;
-        this.inputs.set(0,point.getX1());
-        this.inputs.set(1,point.getX2());
+        this.inputs.set(0, point.getX1());
+        this.inputs.set(1, point.getX2());
         for (int i = 0; i < numberOfInputs; i++) {
-            u = u+ inputs.get(i) * weights.get(i);
+            u = u + inputs.get(i) * weights.get(i);
         }
-        u = u + bias;
+        if (bias != null) u = u + bias;
+
+
         return u;
     }
 
@@ -67,10 +68,16 @@ public class Neuron {
                 bias = bias + inputs.get(i) * temp;
             }
         }
-        if (u <=0) {
+    }
 
+    public void correctWeightsWithoutBias(Double u, Double temp) {
+        for (int i = 0; i < numberOfInputs; i++) {
+            if (u <= 0) {
+                weights.set(i, weights.get(i) - inputs.get(i) * temp);
+            } else {
+                weights.set(i, weights.get(i) + inputs.get(i) * temp);
+            }
         }
-
 
     }
 
