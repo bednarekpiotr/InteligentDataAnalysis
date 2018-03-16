@@ -6,10 +6,8 @@ import lombok.Setter;
 import org.apache.log4j.Logger;
 import utils.NeuronUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Klasa reprezntująca pojedynczy neuron
@@ -44,7 +42,7 @@ public class Neuron {
         inputs = Arrays.asList(new Double[numberOfInputs]);
         weights = Arrays.asList(new Double[numberOfInputs]);
         NeuronUtils.fillWagesWithRandoms(weights, 2, 5, numberOfInputs);
-        if (isBias) bias = 1.0;
+        if (isBias) bias = 0.1;
     }
 
     public Double countU(Point point) {
