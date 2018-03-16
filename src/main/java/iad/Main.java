@@ -5,9 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import utils.NeuronUtils;
-
-import java.util.List;
 
 public class Main extends Application {
 
@@ -26,6 +23,7 @@ public class Main extends Application {
         scene.getStylesheets().add(getClass().getClassLoader().getResource("chart.css").toExternalForm());
         primaryStage.setScene(scene);
         primaryStage.show();
+        primaryStage.setMaximized(true);
 
 
     }
