@@ -6,7 +6,7 @@ import lombok.Setter;
 import org.apache.log4j.Logger;
 import utils.NeuronUtils;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,10 +18,7 @@ public class Neuron {
     private static final Logger LOGGER = Logger.getLogger(Neuron.class);
     @Getter
     @Setter
-    private List<Double> inputs;
-    @Getter
-    @Setter
-    private List<Double> weights;
+    private List<Input> inputs;
     @Getter
     @Setter
     private Double output;
@@ -33,51 +30,54 @@ public class Neuron {
     private int numberOfInputs;
     @Getter
     @Setter
-    private Double bias;
+    private Input bias;
 
     public Neuron(Boolean isBias, int numberOfInputs) {
         this.output = 0.0;
         this.isBias = isBias;
         this.numberOfInputs = numberOfInputs;
-        inputs = Arrays.asList(new Double[numberOfInputs]);
-        weights = Arrays.asList(new Double[numberOfInputs]);
-        NeuronUtils.fillWagesWithRandoms(weights, 2, 5, numberOfInputs);
+        inputs = new ArrayList<>(numberOfInputs);
+        NeuronUtils.fillWeightsWithRandoms(inputs, -1, 1, numberOfInputs);
     }
 
-    public Double countU(Point point) {
-        Double u = 0.0;
-        this.inputs.set(0, point.getX1());
-        this.inputs.set(1, point.getX2());
-        for (int i = 0; i < numberOfInputs; i++) {
-            u = u + inputs.get(i) * weights.get(i);
+    public Double countOutput() {
+        for (Input input : inputs) {
+            output = output + input.getInputValue() * input.getInputWeight();
         }
-        if (bias != null) u = u + bias;
-
-
-        return u;
+        if (isBias) {
+            output = output + bias.getInputWeight() * bias.getInputValue();
+        }
+        return output;
     }
 
-    public void correctWeights(Double u, Double temp) {
-        for (int i = 0; i < numberOfInputs; i++) {
-            if (u <= 0) {
-                weights.set(i, weights.get(i) - inputs.get(i) * temp);
-                bias = bias - inputs.get(i) * temp;
+    public void correctWeights(Double output, Double learningStep) {
+        if (isBias) {
+            for (Input input : inputs) {
+                if (output <= 0) {
+                    input.setInputWeight(input.getInputWeight() - input.getInputValue() * learningStep);
+                    bias.setInputWeight(bias.getInputWeight() - bias.getInputValue() * learningStep);
+                    LOGGER.info("Wejscie" + input.toString() + "Bias" + bias.toString());
 
-            } else {
-                weights.set(i, weights.get(i) + inputs.get(i) * temp);
-                bias = bias + inputs.get(i) * temp;
+                } else {
+                    input.setInputWeight(input.getInputWeight() + input.getInputValue() * learningStep);
+                    bias.setInputWeight(bias.getInputWeight() + bias.getInputValue() * learningStep);
+                    LOGGER.info("Wejscie" + input.toString() + "Bias" + bias.toString());
+
+                }
+            }
+        } else {
+            for (Input input : inputs) {
+                if (output <= 0) {
+                    input.setInputWeight(input.getInputWeight() - input.getInputValue() * learningStep);
+                    LOGGER.info(input.toString());
+                } else {
+                    input.setInputWeight(input.getInputWeight() + input.getInputValue() * learningStep);
+                    LOGGER.info(input.toString());
+                }
             }
         }
-    }
 
-    public void correctWeightsWithoutBias(Double u, Double temp) {
-        for (int i = 0; i < numberOfInputs; i++) {
-            if (u <= 0) {
-                weights.set(i, weights.get(i) - inputs.get(i) * temp);
-            } else {
-                weights.set(i, weights.get(i) + inputs.get(i) * temp);
-            }
-        }
+
 
     }
 

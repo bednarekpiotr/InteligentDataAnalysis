@@ -1,5 +1,6 @@
 package utils;
 
+import iad.Input;
 import iad.Point;
 import org.apache.log4j.Logger;
 
@@ -27,10 +28,10 @@ public class NeuronUtils {
      * @param max
      * @param numberOfInputs
      */
-    public static void fillWagesWithRandoms(List weights, double min, double max, int numberOfInputs) {
+    public static void fillWeightsWithRandoms(List<Input> weights, double min, double max, int numberOfInputs) {
         for (int i = 0; i < numberOfInputs; i++) {
             LOGGER.info("Losowanie wag");
-            weights.set(i,ThreadLocalRandom.current().nextDouble(min, max));
+            weights.add(new Input(null, ThreadLocalRandom.current().nextDouble(min, max)));
         }
     }
 

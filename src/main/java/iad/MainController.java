@@ -43,11 +43,12 @@ public class MainController {
 
     @FXML
     void initialize() {
+        neuron = new Neuron(ifBias.isSelected(), 2);
     }
 
     @FXML
     void refreshChart(ActionEvent event) {
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 100; i++) {
             refreshChart();
         }
     }
@@ -57,27 +58,25 @@ public class MainController {
         Double left = -5.0;
         Double right = 5.0;
         XYChart.Series tempSeries = new XYChart.Series();
-        if (ifBias.isSelected()) {
             for (Point point : points) {
-                Double value = neuron.countU(point);
-                neuron.correctWeights(value, 0.1);
+                neuron.getInputs().get(0).setInputValue(point.getX1());
+                neuron.getInputs().get(1).setInputValue(point.getX2());
+                Double output = neuron.countOutput();
+                neuron.correctWeights(output, 0.1);
             }
-        } else {
-            for (Point point : points) {
-                Double value = neuron.countU(point);
-                neuron.correctWeightsWithoutBias(value, 0.1);
-            }
-        }
+
 
         if (ifBias.isSelected()) {
-            Point temp = new Point(null, left, (-neuron.getWeights().get(0) / neuron.getWeights().get(1)) * left - (neuron.getBias() / neuron.getWeights().get(1)));
+            Point temp = new Point(null, left, (neuron.getInputs().get(0).getInputWeight() / neuron.getInputs().get(1).getInputWeight()) * left + (neuron.getBias().getInputWeight() / neuron.getInputs().get(1).getInputWeight()));
             tempSeries.getData().add(new XYChart.Data<>(temp.getX1(), temp.getX2()));
-            Point temp2 = new Point(null, right, (-neuron.getWeights().get(0) / neuron.getWeights().get(1)) * right - (neuron.getBias() / neuron.getWeights().get(1)));
+            Point temp2 = new Point(null, right, (neuron.getInputs().get(0).getInputWeight() / neuron.getInputs().get(1).getInputWeight()) * right + (neuron.getBias().getInputWeight() / neuron.getInputs().get(1).getInputWeight()));
             tempSeries.getData().add(new XYChart.Data<>(temp2.getX1(), temp2.getX2()));
         } else {
-            Point temp = new Point(null, left, (-neuron.getWeights().get(0) / neuron.getWeights().get(1)) * left);
+            Point temp = new Point(null, left, (neuron.getInputs().get(0).getInputWeight() / neuron.getInputs().get(1).getInputWeight()) * left);
+
             tempSeries.getData().add(new XYChart.Data<>(temp.getX1(), temp.getX2()));
-            Point temp2 = new Point(null, right, (-neuron.getWeights().get(0) / neuron.getWeights().get(1)) * right);
+            Point temp2 = new Point(null, right, (neuron.getInputs().get(0).getInputWeight() / neuron.getInputs().get(1).getInputWeight()) * right);
+
             tempSeries.getData().add(new XYChart.Data<>(temp2.getX1(), temp2.getX2()));
         }
 
@@ -93,7 +92,7 @@ public class MainController {
     void resetChart(ActionEvent event) {
         lineChart.getData().remove(0, lineChart.getData().size());
         neuron.setInputs(new ArrayList<>());
-        neuron.setWeights(new ArrayList<>());
+        neuron.setInputs(new ArrayList<>());
         System.gc();
         System.runFinalization();
 
@@ -101,8 +100,8 @@ public class MainController {
 
     @FXML
     void loadPoints(ActionEvent event) {
-        neuron = new Neuron(ifBias.isSelected(), 2);
-        if (ifBias.isSelected()) neuron.setBias(bias.getValue());
+
+        if (ifBias.isSelected()) neuron.setBias(new Input(0.0, bias.getValue()));
 
 
         for (Point point : points) {
@@ -112,13 +111,13 @@ public class MainController {
         }
         if (ifBias.isSelected()) {
             for (int i = 0; i < neuron.getNumberOfInputs(); i++) {
-                Point temp = new Point(null, i + 1.0, (-neuron.getWeights().get(0) / neuron.getWeights().get(1)) * (i + 1.0) - (neuron.getBias() / neuron.getWeights().get(1)));
+                Point temp = new Point(null, i + 1.0, (-neuron.getInputs().get(0).getInputWeight() / neuron.getInputs().get(1).getInputWeight()) * (i + 1.0) - (neuron.getBias().getInputWeight() / neuron.getInputs().get(1).getInputWeight()));
                 seriesThree.getData().add(new XYChart.Data<>(temp.getX1(), temp.getX2()));
             }
         } else {
             for (int i = 0; i < neuron.getNumberOfInputs(); i++) {
-                Point temp = new Point(null, i + 1.0, (-neuron.getWeights().get(0) / neuron.getWeights().get(1)) * (i + 1.0));
-                seriesThree.getData().add(new XYChart.Data<>(temp.getX1(), temp.getX2()));
+                Point temp = new Point(null, i + 1.0, (-neuron.getInputs().get(0).getInputWeight() / neuron.getInputs().get(1).getInputWeight()) * (i + 1.0));
+
             }
         }
 
@@ -127,13 +126,16 @@ public class MainController {
 
     @FXML
     void generatePoints(ActionEvent event) {
-        NeuronUtils.generatePointsToFile(-9.0, 5.0, 1500, -25.0, 25.0);
+        NeuronUtils.generatePointsToFile(-5.0, 1.0, 1500, -25.0, 25.0);
     }
 
     @FXML
     void changeBiasValue(ActionEvent event) {
-        neuron.setBias(bias.getValue());
-        //
+        if (neuron.getIsBias()) {
+            neuron.setBias(new Input(bias.getValue(), 0.1));
+        } else neuron.setBias(new Input(bias.getValue(), 0.1));
+
+
     }
 
 }
