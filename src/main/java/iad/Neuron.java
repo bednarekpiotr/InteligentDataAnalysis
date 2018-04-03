@@ -37,6 +37,7 @@ public class Neuron {
         this.isBias = isBias;
         this.numberOfInputs = numberOfInputs;
         inputs = new ArrayList<>(numberOfInputs);
+        bias = new Input(1.0, 0.01);
         NeuronUtils.fillWeightsWithRandoms(inputs, -1, 1, numberOfInputs);
     }
 
@@ -47,38 +48,48 @@ public class Neuron {
         if (isBias) {
             output = output + bias.getInputWeight() * bias.getInputValue();
         }
-        return output;
+        if (output > 0) return 1.0;
+        else return -1.0;
     }
 
-    public void correctWeights(Double output, Double learningStep) {
+    public boolean classifyPoint() {
+
+        return false;
+    }
+
+    public void correctWeights(Double output, Double learningStep, Double expectedValue) {
         if (isBias) {
             for (Input input : inputs) {
-                if (output <= 0) {
-                    input.setInputWeight(input.getInputWeight() - input.getInputValue() * learningStep);
+                if (output != expectedValue) {
+                    if (output == -1) {
+                        input.setInputWeight(input.getInputWeight() - input.getInputValue() * learningStep);
+                        //bias.setInputWeight(bias.getInputWeight() - bias.getInputValue() * learningStep);
+                        LOGGER.info("Wejscie " + input.toString() + "Bias " + bias.toString());
+                    } else {
+                        input.setInputWeight(input.getInputWeight() + input.getInputValue() * learningStep);
+                        //bias.setInputWeight(bias.getInputWeight() + bias.getInputValue() * learningStep);
+                        LOGGER.info("Wejscie" + input.toString() + "Bias" + bias.toString());
+                    }
+                }
+                if (isBias) {
                     bias.setInputWeight(bias.getInputWeight() - bias.getInputValue() * learningStep);
-                    LOGGER.info("Wejscie" + input.toString() + "Bias" + bias.toString());
-
-                } else {
-                    input.setInputWeight(input.getInputWeight() + input.getInputValue() * learningStep);
-                    bias.setInputWeight(bias.getInputWeight() + bias.getInputValue() * learningStep);
-                    LOGGER.info("Wejscie" + input.toString() + "Bias" + bias.toString());
-
                 }
             }
         } else {
             for (Input input : inputs) {
-                if (output <= 0) {
-                    input.setInputWeight(input.getInputWeight() - input.getInputValue() * learningStep);
-                    LOGGER.info(input.toString());
-                } else {
-                    input.setInputWeight(input.getInputWeight() + input.getInputValue() * learningStep);
-                    LOGGER.info(input.toString());
+                if (output != expectedValue) {
+                    if (output == -1) {
+                        input.setInputWeight(input.getInputWeight() - input.getInputValue() * learningStep);
+                        LOGGER.info(input.toString());
+                    } else {
+                        input.setInputWeight(input.getInputWeight() + input.getInputValue() * learningStep);
+                        LOGGER.info(input.toString());
+                    }
                 }
             }
+
+
         }
-
-
-
     }
 
 

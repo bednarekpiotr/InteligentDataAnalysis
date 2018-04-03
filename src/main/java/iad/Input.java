@@ -18,6 +18,6 @@ public class Input {
 
     @Override
     public String toString() {
-        return new StringBuffer("Input: ").append(inputValue.toString()).append("Wight: ").append(inputWeight.toString()).toString();
+        return new StringBuffer(" Input: ").append(inputValue.toString()).append(" Weight: ").append(inputWeight.toString()).toString();
     }
 }
