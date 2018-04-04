@@ -38,9 +38,14 @@ public class Neuron {
         this.numberOfInputs = numberOfInputs;
         inputs = new ArrayList<>(numberOfInputs);
         bias = new Input(1.0, 0.01);
-        NeuronUtils.fillWeightsWithRandoms(inputs, -1, 1, numberOfInputs);
+        NeuronUtils.fillWeightsWithRandoms(inputs, 0.0, 0.01, numberOfInputs);
     }
 
+    /**
+     * Metoda do obliczania wyjścia neuronu
+     *
+     * @return
+     */
     public Double countOutput() {
         for (Input input : inputs) {
             output = output + input.getInputValue() * input.getInputWeight();
@@ -61,7 +66,7 @@ public class Neuron {
         if (isBias) {
             for (Input input : inputs) {
                 if (output != expectedValue) {
-                    if (output == -1) {
+                    if (output ==-1.0) {
                         input.setInputWeight(input.getInputWeight() - input.getInputValue() * learningStep);
                         //bias.setInputWeight(bias.getInputWeight() - bias.getInputValue() * learningStep);
                         LOGGER.info("Wejscie " + input.toString() + "Bias " + bias.toString());
@@ -71,25 +76,22 @@ public class Neuron {
                         LOGGER.info("Wejscie" + input.toString() + "Bias" + bias.toString());
                     }
                 }
-                if (isBias) {
-                    bias.setInputWeight(bias.getInputWeight() - bias.getInputValue() * learningStep);
-                }
             }
+            bias.setInputWeight(bias.getInputWeight() - bias.getInputValue() * learningStep);
         } else {
             for (Input input : inputs) {
-                if (output != expectedValue) {
-                    if (output == -1) {
-                        input.setInputWeight(input.getInputWeight() - input.getInputValue() * learningStep);
-                        LOGGER.info(input.toString());
-                    } else {
-                        input.setInputWeight(input.getInputWeight() + input.getInputValue() * learningStep);
-                        LOGGER.info(input.toString());
-                    }
+                if (output <= 0) {
+                    input.setInputWeight(input.getInputWeight() - input.getInputValue() * learningStep);
+                    LOGGER.info(input.toString());
+                } else {
+                    input.setInputWeight(input.getInputWeight() + input.getInputValue() * learningStep);
+                    LOGGER.info(input.toString());
                 }
             }
-
-
         }
+
+
+
     }
 
 

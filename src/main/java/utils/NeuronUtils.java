@@ -66,7 +66,7 @@ public class NeuronUtils {
             if (point.getX2() > a * point.getX1() + b) {
                 point.setTag(1.0);
 
-            } else point.setTag(0.0);
+            } else point.setTag(-1.0);
         }
         try {
             BufferedWriter bufferedWriter = Files.newBufferedWriter(Paths.get(OUTPUT));

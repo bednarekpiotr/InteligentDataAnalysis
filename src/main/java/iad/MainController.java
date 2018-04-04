@@ -26,10 +26,6 @@ public class MainController {
     private LineChart<?, ?> lineChart;
     @FXML
     private Button learn;
-    //@FXML
-    // private Slider bias;
-    // @FXML
-    //private CheckBox ifBias;
     @FXML
     private Button loadPoints;
     @FXML
@@ -37,8 +33,8 @@ public class MainController {
 
     private int epoka = 1;
 
-    private double a = -0.5;
-    private double b = 1.0;
+    private double a = 2.0;
+    private double b = 2.0;
 
 
     List<Point> points = NeuronUtils.readPointsFromFile();
@@ -50,12 +46,12 @@ public class MainController {
 
     @FXML
     void initialize() {
-        neuron = new Neuron(Boolean.TRUE, 2);
+        neuron = new Neuron(Boolean.FALSE, 2);
     }
 
     @FXML
     void refreshChart(ActionEvent event) {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1; i++) {
             LOGGER.info("Epoka: " + epoka);
             refreshChart();
             epoka++;
@@ -71,8 +67,8 @@ public class MainController {
         for (Point point : points) {
             neuron.getInputs().get(0).setInputValue(point.getX1());
             neuron.getInputs().get(1).setInputValue(point.getX2());
-            neuron.setOutput(neuron.getOutput() + neuron.countOutput());
-            neuron.correctWeights(neuron.getOutput(), 0.1, point.getTag());
+            neuron.setOutput(neuron.countOutput());
+            neuron.correctWeights(neuron.getOutput(), 0.09, point.getTag());
 
         }
 
@@ -130,23 +126,15 @@ public class MainController {
             }
         }
 
-        seriesFour.getData().add(new XYChart.Data<>(-10, a * -1 + b));
-        seriesFour.getData().add(new XYChart.Data<>(10, a * 1 + b));
+        seriesFour.getData().add(new XYChart.Data<>(-10, a * -10 + b));
+        seriesFour.getData().add(new XYChart.Data<>(10, a * 10 + b));
         lineChart.getData().addAll(seriesOne, seriesZero, seriesFour, seriesThree);
     }
 
     @FXML
     void generatePoints(ActionEvent event) {
-        NeuronUtils.generatePointsToFile(a, b, 20, -5.0, 5.0);
+        NeuronUtils.generatePointsToFile(a, b, 100, -5.0, 5.0);
     }
 
-//    @FXML
-//    void changeBiasValue(ActionEvent event) {
-//        if (neuron.getIsBias()) {
-//            neuron.setBias(new Input(neuron.getBias().getValue(), 0.1));
-//        } else neuron.setBias(new Input(bias.getValue(), 0.1));
-//
-//
-//    }
 
 }

@@ -4,6 +4,7 @@
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Line?>
 <AnchorPane prefHeight="563.0" prefWidth="923.0" xmlns:fx="http://javafx.com/fxml/1"
             xmlns="http://javafx.com/javafx/2.2" fx:controller="iad.MainController">
   <children>
@@ -14,6 +15,7 @@
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
+                <Line fx:id="line" endX="100.0" layoutX="361.0" layoutY="263.0" startX="-100.0"/>
                 <LineChart fx:id="lineChart" animated="false" prefHeight="472.0" prefWidth="746.0"
                            title="Rozmieszczenie punktów" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="177.0"
                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -26,14 +28,6 @@
                 </LineChart>
                 <Button id="learn" layoutX="14.0" layoutY="458.0" mnemonicParsing="false" onAction="#refreshChart"
                         text="Licz epoka"/>
-                <!--<CheckBox fx:id="ifBias" layoutX="14.0" layoutY="30.0" mnemonicParsing="false"-->
-                <!--onAction="#changeBiasValue" text="Czy Bias"/>-->
-                <!--<Separator layoutX="0.0" layoutY="52.0" prefWidth="200.0"/>-->
-                <!--<Slider fx:id="bias" blockIncrement="0.01" disable="false" layoutX="14.0" layoutY="70.0"-->
-                <!--majorTickUnit="0.1" max="1.0" minorTickCount="1" prefWidth="193.0" showTickLabels="true"-->
-                <!--showTickMarks="true" snapToTicks="true" value="0.5"/>-->
-                <!--<Separator layoutX="14.0" layoutY="107.0" prefWidth="200.0"/>-->
-                <!--<Separator layoutX="14.0" layoutY="450.0" prefWidth="200.0"/>-->
                 <Button fx:id="resetButton" layoutX="14.0" layoutY="492.0" mnemonicParsing="false"
                         onAction="#resetChart" text="Reset"/>
                 <Button fx:id="loadPoints" layoutX="11.0" layoutY="426.0" mnemonicParsing="false" onAction="#loadPoints"
