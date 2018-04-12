@@ -78,6 +78,7 @@ public class NeuronUtils {
                 bufferedWriter.flush();
 
             }
+            bufferedWriter.close();
         } catch (IOException e1) {
             e1.printStackTrace();
         }

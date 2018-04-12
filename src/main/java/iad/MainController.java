@@ -7,6 +7,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import lombok.val;
 import org.apache.log4j.Logger;
 import utils.NeuronUtils;
 
@@ -49,13 +50,14 @@ public class MainController {
 
     private int epoka = 1;
 
-    Double left = -15.0;
-    Double right = 15.0;
+    Double left;
+    Double right;
 
 
 
     List<Point> points = NeuronUtils.readPointsFromFile();
     XYChart.Series seriesOne = new XYChart.Series();
+
     XYChart.Series seriesZero = new XYChart.Series();
     XYChart.Series seriesThree = new XYChart.Series();
     XYChart.Series seriesFour = new XYChart.Series();
@@ -64,11 +66,12 @@ public class MainController {
     @FXML
     void initialize() {
         neuron = new Neuron(Boolean.TRUE, 2);
+
     }
 
     @FXML
     void refreshChart(ActionEvent event) {
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 1000; i++) {
             LOGGER.info("###############################################################################");
             LOGGER.info("Epoka: " + epoka);
             refreshChart();
@@ -87,7 +90,7 @@ public class MainController {
             neuron.getInputs().get(1).setInputValue(point.getX2());
             neuron.setOutput(neuron.countOutput());
             LOGGER.info("Wyjscie neuronu: " + neuron.getOutput());
-            neuron.correctWeights(neuron.getOutput(), 0.1, point.getTag());
+            neuron.correctWeights(neuron.getOutput(), 0.3, point.getTag());
 
         }
 
@@ -124,7 +127,8 @@ public class MainController {
 
     @FXML
     void loadPoints(ActionEvent event) {
-
+        left = Double.valueOf(min.getText());
+        right = Double.valueOf(max.getText());
 
 
 
