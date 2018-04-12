@@ -6,6 +6,7 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import org.apache.log4j.Logger;
 import utils.NeuronUtils;
 
@@ -31,10 +32,26 @@ public class MainController {
     @FXML
     private Button generatePoints;
 
+    @FXML
+    private TextField a;
+
+    @FXML
+    private TextField b;
+
+    @FXML
+    private TextField max;
+
+    @FXML
+    private TextField min;
+
+    @FXML
+    private TextField quantity;
+
     private int epoka = 1;
 
-    private double a = 2.0;
-    private double b = 2.0;
+    Double left = -15.0;
+    Double right = 15.0;
+
 
 
     List<Point> points = NeuronUtils.readPointsFromFile();
@@ -62,8 +79,7 @@ public class MainController {
 
 
     void refreshChart() {
-        Double left = -5.0;
-        Double right = 5.0;
+
         XYChart.Series tempSeries = new XYChart.Series();
         for (Point point : points) {
             LOGGER.info("Punkt" + point.toString());
@@ -109,7 +125,7 @@ public class MainController {
     @FXML
     void loadPoints(ActionEvent event) {
 
-        // if (ifBias.isSelected()) neuron.setBias(new Input(0.0, bias.getValue()));
+
 
 
         for (Point point : points) {
@@ -129,14 +145,14 @@ public class MainController {
             }
         }
 
-        seriesFour.getData().add(new XYChart.Data<>(-10, a * -10 + b));
-        seriesFour.getData().add(new XYChart.Data<>(10, a * 10 + b));
+        seriesFour.getData().add(new XYChart.Data<>(left, Double.valueOf(a.getText()) * left + Double.valueOf(b.getText())));
+        seriesFour.getData().add(new XYChart.Data<>(right, Double.valueOf(a.getText()) * right + Double.valueOf(b.getText())));
         lineChart.getData().addAll(seriesOne, seriesZero, seriesFour, seriesThree);
     }
 
     @FXML
     void generatePoints(ActionEvent event) {
-        NeuronUtils.generatePointsToFile(a, b, 10, -25.0, 25.0);
+        NeuronUtils.generatePointsToFile(Double.valueOf(a.getText()), Double.valueOf(b.getText()), Integer.valueOf(quantity.getText()), Double.valueOf(min.getText()), Double.valueOf(max.getText()));
     }
 
 
