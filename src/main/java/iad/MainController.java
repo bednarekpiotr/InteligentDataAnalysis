@@ -52,6 +52,7 @@ public class MainController {
     @FXML
     void refreshChart(ActionEvent event) {
         for (int i = 0; i < 1; i++) {
+            LOGGER.info("###############################################################################");
             LOGGER.info("Epoka: " + epoka);
             refreshChart();
             epoka++;
@@ -135,7 +136,7 @@ public class MainController {
 
     @FXML
     void generatePoints(ActionEvent event) {
-        NeuronUtils.generatePointsToFile(a, b, 10, -1.0, 1.0);
+        NeuronUtils.generatePointsToFile(a, b, 10, -25.0, 25.0);
     }
 
 
