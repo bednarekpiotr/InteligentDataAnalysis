@@ -63,10 +63,11 @@ public class NeuronUtils {
             points.add(new Point(null, ThreadLocalRandom.current().nextDouble(minRange, maxRange), ThreadLocalRandom.current().nextDouble(minRange, maxRange)));
         }
         for (Point point : points) {
+            LOGGER.info("Expected value: " + (point.getX1() * a + point.getX2() * b));
             if (point.getX2() > a * point.getX1() + b) {
                 point.setTag(1.0);
-
             } else point.setTag(-1.0);
+            LOGGER.info("Value: " + point.getTag());
         }
         try {
             BufferedWriter bufferedWriter = Files.newBufferedWriter(Paths.get(OUTPUT));

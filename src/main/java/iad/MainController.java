@@ -46,7 +46,7 @@ public class MainController {
 
     @FXML
     void initialize() {
-        neuron = new Neuron(Boolean.FALSE, 2);
+        neuron = new Neuron(Boolean.TRUE, 2);
     }
 
     @FXML
@@ -65,10 +65,12 @@ public class MainController {
         Double right = 5.0;
         XYChart.Series tempSeries = new XYChart.Series();
         for (Point point : points) {
+            LOGGER.info("Punkt" + point.toString());
             neuron.getInputs().get(0).setInputValue(point.getX1());
             neuron.getInputs().get(1).setInputValue(point.getX2());
             neuron.setOutput(neuron.countOutput());
-            neuron.correctWeights(neuron.getOutput(), 0.09, point.getTag());
+            LOGGER.info("Wyjscie neuronu: " + neuron.getOutput());
+            neuron.correctWeights(neuron.getOutput(), 0.1, point.getTag());
 
         }
 
@@ -133,7 +135,7 @@ public class MainController {
 
     @FXML
     void generatePoints(ActionEvent event) {
-        NeuronUtils.generatePointsToFile(a, b, 100, -5.0, 5.0);
+        NeuronUtils.generatePointsToFile(a, b, 10, -1.0, 1.0);
     }
 
 

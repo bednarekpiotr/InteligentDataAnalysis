@@ -37,8 +37,8 @@ public class Neuron {
         this.isBias = isBias;
         this.numberOfInputs = numberOfInputs;
         inputs = new ArrayList<>(numberOfInputs);
-        bias = new Input(1.0, 0.01);
-        NeuronUtils.fillWeightsWithRandoms(inputs, 0.0, 0.01, numberOfInputs);
+        bias = new Input(1.0, 0.0);
+        NeuronUtils.fillWeightsWithRandoms(inputs, 0, 0.1, numberOfInputs);
     }
 
     /**
@@ -53,44 +53,39 @@ public class Neuron {
         if (isBias) {
             output = output + bias.getInputWeight() * bias.getInputValue();
         }
-        if (output > 0) return 1.0;
+        LOGGER.info("Obliczone wyjscie: " + output);
+        if (output >= 0) return 1.0;
         else return -1.0;
     }
 
-    public boolean classifyPoint() {
-
-        return false;
-    }
 
     public void correctWeights(Double output, Double learningStep, Double expectedValue) {
-        if (isBias) {
-            for (Input input : inputs) {
-                if (output != expectedValue) {
-                    if (output ==-1.0) {
-                        input.setInputWeight(input.getInputWeight() - input.getInputValue() * learningStep);
-                        //bias.setInputWeight(bias.getInputWeight() - bias.getInputValue() * learningStep);
-                        LOGGER.info("Wejscie " + input.toString() + "Bias " + bias.toString());
-                    } else {
-                        input.setInputWeight(input.getInputWeight() + input.getInputValue() * learningStep);
-                        //bias.setInputWeight(bias.getInputWeight() + bias.getInputValue() * learningStep);
-                        LOGGER.info("Wejscie" + input.toString() + "Bias" + bias.toString());
-                    }
-                }
-            }
-            bias.setInputWeight(bias.getInputWeight() - bias.getInputValue() * learningStep);
-        } else {
-            for (Input input : inputs) {
-                if (output <= 0) {
+        if (output.compareTo(expectedValue) != 0) {
+            LOGGER.info("Korekcja wag");
+            if (output.compareTo(1.0) == 0) {
+                for (Input input : this.getInputs()) {
+                    LOGGER.info("Waga przed korekcja: " + input.getInputWeight());
                     input.setInputWeight(input.getInputWeight() - input.getInputValue() * learningStep);
-                    LOGGER.info(input.toString());
-                } else {
-                    input.setInputWeight(input.getInputWeight() + input.getInputValue() * learningStep);
-                    LOGGER.info(input.toString());
+                    LOGGER.info("Waga po korekcja: " + input.getInputWeight());
+
                 }
+                LOGGER.info("Bias przed korekcji: " + bias.getInputWeight());
+                bias.setInputWeight(bias.getInputWeight() - bias.getInputValue() * learningStep);
+                LOGGER.info("Bias po korekcji: " + bias.getInputWeight());
+            } else {
+                for (Input input : this.getInputs()) {
+                    LOGGER.info("Waga przed korekcja: " + input.getInputWeight());
+                    input.setInputWeight(input.getInputWeight() + input.getInputValue() * learningStep);
+                    LOGGER.info("Waga po korekcja: " + input.getInputWeight());
+                }
+                LOGGER.info("Bias przed korekcji: " + bias.getInputWeight());
+                bias.setInputWeight(bias.getInputWeight() + bias.getInputValue() * learningStep);
+                LOGGER.info("Bias po korekcji: " + bias.getInputWeight());
             }
+
+        } else {
+            LOGGER.info("Bez korekcji");
         }
-
-
 
     }
 
