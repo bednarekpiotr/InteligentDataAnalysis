@@ -2,12 +2,11 @@ package iad;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.chart.LineChart;
+import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import lombok.val;
 import org.apache.log4j.Logger;
 import utils.NeuronUtils;
 
@@ -25,7 +24,7 @@ public class MainController {
     @FXML
     private NumberAxis y;
     @FXML
-    private LineChart<?, ?> lineChart;
+    private AreaChart<?, ?> lineChart;
     @FXML
     private Button learn;
     @FXML
@@ -71,7 +70,7 @@ public class MainController {
 
     @FXML
     void refreshChart(ActionEvent event) {
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 1; i++) {
             LOGGER.info("###############################################################################");
             LOGGER.info("Epoka: " + epoka);
             refreshChart();
@@ -127,6 +126,8 @@ public class MainController {
 
     @FXML
     void loadPoints(ActionEvent event) {
+        loadValues();
+
         left = Double.valueOf(min.getText());
         right = Double.valueOf(max.getText());
 
@@ -149,8 +150,6 @@ public class MainController {
             }
         }
 
-        seriesFour.getData().add(new XYChart.Data<>(left, Double.valueOf(a.getText()) * left + Double.valueOf(b.getText())));
-        seriesFour.getData().add(new XYChart.Data<>(right, Double.valueOf(a.getText()) * right + Double.valueOf(b.getText())));
         lineChart.getData().addAll(seriesOne, seriesZero, seriesFour, seriesThree);
     }
 
@@ -159,5 +158,24 @@ public class MainController {
         NeuronUtils.generatePointsToFile(Double.valueOf(a.getText()), Double.valueOf(b.getText()), Integer.valueOf(quantity.getText()), Double.valueOf(min.getText()), Double.valueOf(max.getText()));
     }
 
+    void loadValues() {
+        if (a.getText().isEmpty()) {
+            a.setText("2");
+        }
+        if (b.getText().isEmpty()) {
+            b.setText("2");
+        }
+        if (min.getText().isEmpty()) {
+            min.setText("-15");
+        }
+        if (max.getText().isEmpty()) {
+            max.setText("15");
+        }
+
+        if (quantity.getText().isEmpty()) {
+            quantity.setText("100");
+        }
+
+    }
 
 }

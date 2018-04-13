@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.AreaChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -16,7 +16,7 @@
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
                 <Line fx:id="line" endX="100.0" layoutX="361.0" layoutY="263.0" startX="-100.0"/>
-                <LineChart fx:id="lineChart" animated="false" prefHeight="472.0" prefWidth="746.0"
+                <AreaChart fx:id="lineChart" animated="false" prefHeight="472.0" prefWidth="746.0"
                            title="Rozmieszczenie punktów" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="177.0"
                            AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                   <xAxis>
@@ -25,7 +25,7 @@
                   <yAxis>
                     <NumberAxis fx:id="y" label="y" lowerBound="-200.0" side="LEFT" upperBound="200.0"/>
                   </yAxis>
-                </LineChart>
+                </AreaChart>
                 <Button id="learn" layoutX="14.0" layoutY="458.0" mnemonicParsing="false" onAction="#refreshChart"
                         text="Licz epoka"/>
                 <Button fx:id="resetButton" layoutX="14.0" layoutY="492.0" mnemonicParsing="false"
@@ -34,15 +34,16 @@
                         text="Wczytaj punkty"/>
                 <Button fx:id="generatePoints" layoutX="11.0" layoutY="395.0" mnemonicParsing="false"
                         onAction="#generatePoints" text="Generuj punkty"/>
-                <TextField fx:id="a" layoutX="11.0" layoutY="40.0" prefWidth="59.0"/>
+                <TextField fx:id="a" layoutX="10.0" layoutY="40.0" prefWidth="59.0" promptText="Podaj a" text=""/>
                 <Label layoutX="14.0" layoutY="24.0" text="a"/>
-                <TextField fx:id="b" layoutX="84.0" layoutY="40.0" prefWidth="59.0"/>
+                <TextField fx:id="b" layoutX="83.0" layoutY="40.0" prefWidth="59.0" promptText="Podaj b"/>
                 <Label layoutX="87.0" layoutY="24.0" text="b"/>
-                <TextField fx:id="min" layoutX="11.0" layoutY="87.0" prefWidth="59.0"/>
+                <TextField fx:id="min" layoutX="10.0" layoutY="87.0" prefWidth="59.0" promptText="Podaj min"/>
                 <Label layoutX="14.0" layoutY="71.0" text="min"/>
-                <TextField fx:id="max" layoutX="95.0" layoutY="87.0" prefWidth="59.0"/>
+                <TextField fx:id="max" layoutX="95.0" layoutY="87.0" prefWidth="59.0" promptText="Podaj max"/>
                 <Label layoutX="98.0" layoutY="71.0" text="max"/>
-                <TextField fx:id="quantity" layoutX="14.0" layoutY="136.0" prefWidth="59.0"/>
+                <TextField fx:id="quantity" layoutX="14.0" layoutY="136.0" prefWidth="152.0"
+                           promptText="Podaj liczbę punktów"/>
                 <Label layoutX="17.0" layoutY="120.0" text="quantity"/>
               </children>
             </AnchorPane>
